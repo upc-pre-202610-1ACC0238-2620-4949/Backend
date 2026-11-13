@@ -7,4 +7,7 @@
   <data name="AccountNotFound" xml:space="preserve"><value>The account was not found.</value></data>
   <data name="NoActiveSubscription" xml:space="preserve"><value>The account does not have an active subscription.</value></data>
   <data name="ZonePlanLimitReached" xml:space="preserve"><value>Plan limit reached. Your current plan allows up to {0} zones.</value></data>
+  <data name="ZoneNotFound" xml:space="preserve"><value>The zone was not found.</value></data>
+  <data name="ZoneNameRequired" xml:space="preserve"><value>A zone name is required.</value></data>
+  <data name="ZoneHasSensors" xml:space="preserve"><value>The zone still has sensors. Move or delete them first.</value></data>
 </root>

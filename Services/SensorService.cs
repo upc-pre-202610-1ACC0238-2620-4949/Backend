@@ -25,6 +25,13 @@ public class SensorService
             .ToListAsync();
     }
 
+    public async Task<SensorResponse?> GetByIdAsync(int id)
+    {
+        var sensor = await _context.Sensors.FirstOrDefaultAsync(item => item.Id == id);
+
+        return sensor == null ? null : ToResponse(sensor);
+    }
+
     public async Task<SensorResponse?> CreateAsync(CreateSensorRequest request)
     {
         if (request.AccountId <= 0)
@@ -170,6 +177,21 @@ public class SensorService
         await _context.SaveChangesAsync();
 
         return ToResponse(sensor);
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var sensor = await _context.Sensors.FirstOrDefaultAsync(item => item.Id == id);
+
+        if (sensor == null)
+        {
+            return false;
+        }
+
+        _context.Sensors.Remove(sensor);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     private static SensorResponse ToResponse(Sensor sensor)

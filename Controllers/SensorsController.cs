@@ -25,6 +25,22 @@ public class SensorsController : ControllerBase
         return Ok(sensors);
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var sensor = await _sensorService.GetByIdAsync(id);
+
+        if (sensor == null)
+        {
+            return NotFound(new
+            {
+                message = _localizer["SensorNotFound"].Value
+            });
+        }
+
+        return Ok(sensor);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateSensorRequest request)
     {
@@ -91,6 +107,22 @@ public class SensorsController : ControllerBase
                 message = LocalizeException(exception)
             });
         }
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _sensorService.DeleteAsync(id);
+
+        if (!deleted)
+        {
+            return NotFound(new
+            {
+                message = _localizer["SensorNotFound"].Value
+            });
+        }
+
+        return NoContent();
     }
 
     private string LocalizeException(Exception exception)

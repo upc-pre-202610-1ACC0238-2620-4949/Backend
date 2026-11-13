@@ -25,6 +25,22 @@ public class ZonesController : ControllerBase
         return Ok(zones);
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var zone = await _zoneService.GetByIdAsync(id);
+
+        if (zone == null)
+        {
+            return NotFound(new
+            {
+                message = _localizer["ZoneNotFound"].Value
+            });
+        }
+
+        return Ok(zone);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateZoneRequest request)
     {
@@ -41,6 +57,58 @@ public class ZonesController : ControllerBase
             }
 
             return Created($"/api/v1/zones/{result.Id}", result);
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Conflict(new
+            {
+                message = LocalizeException(exception)
+            });
+        }
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateZoneRequest request)
+    {
+        try
+        {
+            var result = await _zoneService.UpdateAsync(id, request);
+
+            if (result == null)
+            {
+                return NotFound(new
+                {
+                    message = _localizer["ZoneNotFound"].Value
+                });
+            }
+
+            return Ok(result);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new
+            {
+                message = LocalizeException(exception)
+            });
+        }
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            var deleted = await _zoneService.DeleteAsync(id);
+
+            if (!deleted)
+            {
+                return NotFound(new
+                {
+                    message = _localizer["ZoneNotFound"].Value
+                });
+            }
+
+            return NoContent();
         }
         catch (InvalidOperationException exception)
         {
@@ -68,6 +136,8 @@ public class ZonesController : ControllerBase
         return message switch
         {
             "The account does not have an active subscription." => _localizer["NoActiveSubscription"].Value,
+            "A zone name is required." => _localizer["ZoneNameRequired"].Value,
+            "The zone still has sensors." => _localizer["ZoneHasSensors"].Value,
             _ => message
         };
     }
