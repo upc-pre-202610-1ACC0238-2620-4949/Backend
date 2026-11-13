@@ -23,6 +23,8 @@ public class AlertService
                 Id = alert.Id,
                 AccountId = alert.AccountId,
                 IncidentId = alert.IncidentId,
+                ZoneName = alert.Incident.Zone.Name,
+                IsResolved = alert.ResolvedAt != null || alert.Status == "Resolved" || alert.Status == "FalseAlarm",
                 Title = alert.Title,
                 Message = alert.Message,
                 Severity = alert.Severity,

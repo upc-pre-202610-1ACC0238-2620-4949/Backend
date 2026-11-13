@@ -48,3 +48,11 @@ Database: smartgas_db
 Username: smartgas_user
 Password: smartgas_password
 Port: 5432
+```
+
+## Android mobile application
+
+This API also serves the Android frontend in
+[Proyecto_avance](https://github.com/FrancoDiegoR/Proyecto_avance).
+See [mobile integration and manual checks](docs/mobile-integration.md) for the
+endpoint contract, database migration and local setup.

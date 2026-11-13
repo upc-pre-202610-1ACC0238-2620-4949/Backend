@@ -8,6 +8,10 @@ public class AlertResponse
 
     public int IncidentId { get; set; }
 
+    public string ZoneName { get; set; } = string.Empty;
+
+    public bool IsResolved { get; set; }
+
     public string Title { get; set; } = string.Empty;
 
     public string Message { get; set; } = string.Empty;

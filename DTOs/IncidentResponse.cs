@@ -26,6 +26,12 @@ public class IncidentResponse
 
     public string DetectedValue { get; set; } = string.Empty;
 
+    public decimal? GasLevel { get; set; }
+
+    public decimal? Temperature { get; set; }
+
+    public DateTime UpdatedAt { get; set; }
+
     public string Severity { get; set; } = string.Empty;
 
     public string Status { get; set; } = string.Empty;

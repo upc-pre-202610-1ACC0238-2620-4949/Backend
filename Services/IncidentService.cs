@@ -37,6 +37,8 @@ public class IncidentService
         }
 
         incident.Status = "Reviewed";
+        incident.ReviewedAt = DateTime.UtcNow;
+        incident.UpdatedAt = incident.ReviewedAt.Value;
 
         await _context.SaveChangesAsync();
 
@@ -57,6 +59,7 @@ public class IncidentService
 
         incident.Status = "Resolved";
         incident.ResolvedAt = resolvedAt;
+        incident.UpdatedAt = resolvedAt;
 
         await CloseRelatedAlertsAsync(incident.Id, "Resolved", resolvedAt);
 
@@ -79,6 +82,7 @@ public class IncidentService
 
         incident.Status = "FalseAlarm";
         incident.ResolvedAt = resolvedAt;
+        incident.UpdatedAt = resolvedAt;
 
         await CloseRelatedAlertsAsync(incident.Id, "FalseAlarm", resolvedAt);
 
@@ -148,10 +152,13 @@ public class IncidentService
             SensorId = incident.SensorId,
             SensorCode = sensorCode,
             DetectedValue = detectedValue,
+            GasLevel = incident.SensorReading?.GasLevel,
+            Temperature = incident.SensorReading?.Temperature,
+            UpdatedAt = incident.UpdatedAt,
             Severity = incident.Severity,
             Status = incident.Status,
             CreatedAt = incident.CreatedAt,
-            DetectedAt = incident.CreatedAt,
+            DetectedAt = incident.DetectedAt,
             ResolvedAt = incident.ResolvedAt
         };
     }

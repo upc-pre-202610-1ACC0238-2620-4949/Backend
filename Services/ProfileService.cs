@@ -16,6 +16,7 @@ public class ProfileService
     public async Task<ProfileResponse?> GetByAccountAsync(int accountId)
     {
         var profile = await _context.Profiles
+            .Include(profile => profile.Account)
             .FirstOrDefaultAsync(profile => profile.AccountId == accountId);
 
         if (profile == null)
@@ -28,6 +29,9 @@ public class ProfileService
             Id = profile.Id,
             AccountId = profile.AccountId,
             FullName = profile.FullName,
+            Email = profile.Account.Email,
+            Role = profile.Account.Role,
+            AccountType = GetAccountType(profile.Account.Role),
             BusinessName = profile.BusinessName,
             Phone = profile.Phone,
             District = profile.District,
@@ -40,6 +44,7 @@ public class ProfileService
     public async Task<ProfileResponse?> UpdateAsync(int accountId, UpdateProfileRequest request)
     {
         var profile = await _context.Profiles
+            .Include(profile => profile.Account)
             .FirstOrDefaultAsync(profile => profile.AccountId == accountId);
 
         if (profile == null)
@@ -61,6 +66,9 @@ public class ProfileService
             Id = profile.Id,
             AccountId = profile.AccountId,
             FullName = profile.FullName,
+            Email = profile.Account.Email,
+            Role = profile.Account.Role,
+            AccountType = GetAccountType(profile.Account.Role),
             BusinessName = profile.BusinessName,
             Phone = profile.Phone,
             District = profile.District,
@@ -69,4 +77,10 @@ public class ProfileService
             UpdatedAt = profile.UpdatedAt
         };
     }
+
+    private static string GetAccountType(string role) =>
+        role.Contains("restaurant", StringComparison.OrdinalIgnoreCase)
+        || role.Contains("commercial", StringComparison.OrdinalIgnoreCase)
+        || role.Contains("administrator", StringComparison.OrdinalIgnoreCase)
+            ? "commercial" : "domestic";
 }

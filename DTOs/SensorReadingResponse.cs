@@ -10,6 +10,8 @@ public class SensorReadingResponse
 
     public int SensorId { get; set; }
 
+    public string SensorCode { get; set; } = string.Empty;
+
     public decimal? GasLevel { get; set; }
 
     public decimal? Temperature { get; set; }

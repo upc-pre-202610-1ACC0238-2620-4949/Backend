@@ -11,4 +11,6 @@ public class UpdateSensorRequest
     public string? Type { get; set; }
 
     public string? Status { get; set; }
+
+    public string? LocationDetail { get; set; }
 }

@@ -14,6 +14,16 @@ public class ZoneResponse
 
     public string Sensitivity { get; set; } = string.Empty;
 
+    public int SensorCount { get; set; }
+
+    public decimal? GasLevel { get; set; }
+
+    public decimal? Temperature { get; set; }
+
+    public string RiskLevel { get; set; } = "Low";
+
+    public DateTime LastUpdated { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }

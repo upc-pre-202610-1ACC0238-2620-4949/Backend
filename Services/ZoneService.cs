@@ -29,6 +29,19 @@ public class ZoneService
                 Description = zone.Description,
                 Status = zone.Status,
                 Sensitivity = zone.Sensitivity,
+                SensorCount = _context.Sensors.Count(sensor => sensor.ZoneId == zone.Id),
+                GasLevel = _context.SensorReadings
+                    .Where(reading => reading.ZoneId == zone.Id && reading.GasLevel != null)
+                    .OrderByDescending(reading => reading.CreatedAt).ThenByDescending(reading => reading.Id)
+                    .Select(reading => reading.GasLevel).FirstOrDefault(),
+                Temperature = _context.SensorReadings
+                    .Where(reading => reading.ZoneId == zone.Id && reading.Temperature != null)
+                    .OrderByDescending(reading => reading.CreatedAt).ThenByDescending(reading => reading.Id)
+                    .Select(reading => reading.Temperature).FirstOrDefault(),
+                RiskLevel = zone.Status == "Critical" ? "Critical" : zone.Status == "Warning" ? "High" : "Low",
+                LastUpdated = _context.SensorReadings
+                    .Where(reading => reading.ZoneId == zone.Id)
+                    .Max(reading => (DateTime?)reading.CreatedAt) ?? zone.UpdatedAt,
                 CreatedAt = zone.CreatedAt,
                 UpdatedAt = zone.UpdatedAt
             })
@@ -71,6 +84,7 @@ public class ZoneService
             Description = zone.Description,
             Status = zone.Status,
             Sensitivity = zone.Sensitivity,
+            LastUpdated = zone.UpdatedAt,
             CreatedAt = zone.CreatedAt,
             UpdatedAt = zone.UpdatedAt
         };

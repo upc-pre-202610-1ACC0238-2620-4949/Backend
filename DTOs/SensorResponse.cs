@@ -18,6 +18,8 @@ public class SensorResponse
 
     public int BatteryLevel { get; set; }
 
+    public string LocationDetail { get; set; } = string.Empty;
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }

@@ -87,6 +87,7 @@ public class SensorService
             Code = code,
             Name = request.Name.Trim(),
             Type = NormalizeSensorType(request.Type),
+            LocationDetail = request.LocationDetail?.Trim() ?? string.Empty,
             Status = "Online",
             BatteryLevel = 100,
             CreatedAt = DateTime.UtcNow,
@@ -154,6 +155,11 @@ public class SensorService
             sensor.Type = NormalizeSensorType(request.Type);
         }
 
+        if (request.LocationDetail != null)
+        {
+            sensor.LocationDetail = request.LocationDetail.Trim();
+        }
+
         if (!string.IsNullOrWhiteSpace(request.Status))
         {
             sensor.Status = NormalizeStatus(request.Status);
@@ -178,6 +184,7 @@ public class SensorService
             Type = sensor.Type,
             Status = sensor.Status,
             BatteryLevel = sensor.BatteryLevel,
+            LocationDetail = sensor.LocationDetail,
             CreatedAt = sensor.CreatedAt,
             UpdatedAt = sensor.UpdatedAt
         };
